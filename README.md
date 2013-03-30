@@ -14,7 +14,7 @@ Documentation
 Installation
 ------------
 
-Installation instructions are located in [documentation](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/installation.md).
+Installation instructions are located in [documentation](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/installation.md)
 
 License
 ------------

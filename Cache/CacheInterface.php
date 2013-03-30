@@ -19,6 +19,13 @@ namespace ESO\LCacheBundle\Cache;
 interface CacheInterface
 {
     /**
+     * Set a prefix of keys names.
+     *
+     * @param string $prefix Prefix.
+     */
+    public function setPrefix($prefix);
+
+    /**
      * Get by key.
      *
      * @param integer|float|string|boolean $key Key.

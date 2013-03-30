@@ -100,6 +100,19 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test set and get with prefix
+     */
+    public function testSetGetWithPrefix()
+    {
+        $this->cache->setPrefix('test-prefix');
+        $key = 'test-key';
+        $value = 'test-value';
+
+        $this->cache->set($key, $value);
+        $this->assertEquals($value, $this->cache->get($key));
+    }
+
+    /**
      * Test set with expiration.
      */
     public function testSetExpiration()

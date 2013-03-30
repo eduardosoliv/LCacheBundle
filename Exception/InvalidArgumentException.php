@@ -19,6 +19,29 @@ namespace ESO\LCacheBundle\Exception;
 class InvalidArgumentException extends \InvalidArgumentException
 {
     /**
+     * Require value is string.
+     *
+     * @param mixed          $value     Value.
+     * @param string         $callee    Method name of the caller.
+     * @param integer|string $parameter Parameter position/name.
+     *
+     * @throws InvalidArgumentException
+     */
+    public static function requireString($value, $callee, $parameter)
+    {
+        if (!is_string($value)) {
+            throw new static(
+                sprintf(
+                    '%s() expects parameter "%s" to be integer, %s given.',
+                    $callee,
+                    $parameter,
+                    gettype($value)
+                )
+            );
+        }
+    }
+
+    /**
      * Require value is scalar.
      *
      * @param mixed          $value     Value.

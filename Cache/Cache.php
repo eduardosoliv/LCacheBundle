@@ -42,6 +42,11 @@ class Cache implements CacheInterface, IntrospectableInterface
     const KEY = 'key';
 
     /**
+     * Key separator.
+     */
+    const KEY_SEPARATOR = ':';
+
+    /**
      * Value.
      */
     const KEY_VALUE = 'value';
@@ -72,6 +77,13 @@ class Cache implements CacheInterface, IntrospectableInterface
      * @var ExpirationMinHeap
      */
     protected $expirationHeap;
+
+    /**
+     * Prefix.
+     *
+     * @var string
+     */
+    protected $prefix = '';
 
     /**
      * If true some get failed.
@@ -119,6 +131,20 @@ class Cache implements CacheInterface, IntrospectableInterface
     }
 
     /**
+     * Set a prefix of keys names.
+     *
+     * @param string $prefix Prefix.
+     */
+    public function setPrefix($prefix)
+    {
+        InvalidArgumentException::requireString($prefix, __METHOD__, 1);
+
+        $this->prefix = ($prefix == '')
+            ? ''
+            : $prefix . static::KEY_SEPARATOR;
+    }
+
+    /**
      * Get by key.
      *
      * @param integer|float|string|boolean $key Key.
@@ -137,6 +163,9 @@ class Cache implements CacheInterface, IntrospectableInterface
 
         // validate arguments
         InvalidArgumentException::requireScalar($key, __METHOD__, 1);
+
+        // add prefix to key
+        $key = $this->prefix . $key;
 
         if (isset($this->cache[$key])) {
             // check expiration
@@ -185,6 +214,9 @@ class Cache implements CacheInterface, IntrospectableInterface
         // validate data
         InvalidArgumentException::requireScalar($key, __METHOD__, 1);
         InvalidArgumentException::optionalPositiveInteger($expiration, __METHOD__, 3);
+
+        // add prefix to key
+        $key = $this->prefix . $key;
 
         // set key on cache
         $expirationAt = ($expiration === null)

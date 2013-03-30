@@ -20,6 +20,9 @@ $localCache->set('key', 'value');
 echo $localCache->get('key'); // will print value
 ```
 
-The service is singleton so you have to namespace/prefix well your keys to avoid conflicts.
+If you are going to inject the service in your class's you have ESO\LCacheBundle\Cache\CacheInterface to make easily mockable.
 
-Or you can extend ESO\LCacheBundle\Cache\Cache and expose that class as service, if you want...
+**The service is singleton so you have to namespace/prefix well your keys to avoid conflicts.**
+
+Probably the more flexible approach is to extend ESO\LCacheBundle\Cache\Cache so you can add particular features and override methods. If you want to have more than one instance you can have multiple Symfony 2 services.
+

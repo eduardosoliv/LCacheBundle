@@ -9,12 +9,12 @@ Simple Symfony 2 bundle to hold a local cache.
 Documentation
 ------------
 
-[Index](https://github.com/entering/LCacheBundle/master/Resources/doc/index.rst)
+[Index](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/index.md)
 
 Installation
 ------------
 
-Installation instructions are located in [documentation](https://github.com/entering/LCacheBundle/master/Resources/doc/installation.md).
+Installation instructions are located in [documentation](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/installation.md).
 
 License
 ------------

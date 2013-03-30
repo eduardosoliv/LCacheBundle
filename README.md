@@ -4,7 +4,7 @@ Consistent hashing Symfony 2 bundle
 What does this bundle do?
 ------------
 
-Simple Symfony 2 bundle to hold a local cache.
+Simple Symfony 2 bundle to hold a local cache, is useful for example on long running process's like daemons, that you don't want to have external dependencies.
 
 Documentation
 ------------

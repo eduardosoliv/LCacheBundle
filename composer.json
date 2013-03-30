@@ -1,0 +1,23 @@
+{
+    "name": "eso/lcache-bundle",
+    "type": "symfony-bundle",
+    "description": "Local cache bundle",
+    "keywords": ["local", "cache", "bundle", "symfony", "simple"],
+    "homepage": "http://github.com/entering/LCacheBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eduardo Oliveira",
+            "email": "entering@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": { "ESO\\LCacheBundle": "" }
+    },
+    "minimum-stability": "dev",
+    "target-dir": "ESO/LCacheBundle"
+}

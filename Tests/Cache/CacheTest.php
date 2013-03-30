@@ -14,7 +14,7 @@ namespace ESO\LCacheBundle\Tests\Cache;
 use ESO\LCacheBundle\Cache\Cache;
 
 /**
- * Cache test.
+ * Cache tests.
  *
  * @author Eduardo Oliveira <entering@gmail.com>
  */
@@ -160,7 +160,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
      */
     public function testActivelyExpiration()
     {
-        $this->cache->set('key1-expire', 'value', 1);
+        $this->cache->set('key1-expire', 'value', 3);
         $this->cache->set('key2-expire', 'value', 1);
         $this->cache->set('key1-no-expire', 'value'); //no expiration
         // key1-expire, key2-expire and key1-no-expire
@@ -188,6 +188,15 @@ class CacheTest extends \PHPUnit_Framework_TestCase
             $this->cache->getAllKeys()
         );
 
+        // be sure that another set will not expire key1-expire
+        $this->cache->set('key2-no-expire', 'value');
+        $this->assertEquals(3, $this->cache->getStats()['curr_items']);
+        $this->assertEquals(
+            array('key1-expire', 'key1-no-expire', 'key2-no-expire'),
+            $this->cache->getAllKeys()
+        );
+
+        sleep(2);
         $this->cache->set('key3-no-expire', 'value');
 
         // key1-no-expire and key2-no-expire and key3-no-expire

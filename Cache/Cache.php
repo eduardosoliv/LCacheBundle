@@ -18,16 +18,15 @@ use ESO\LCacheBundle\Exception\InvalidArgumentException;
  *
  * Simple class to cache data.
  *
- * It handle expiration in a lazy way, when a key is fetched if it is expired
+ * Handles expiration in a lazy way, when a key is fetched if it is expired
  * will be unset and a miss simulated.
  *
  * It also handle expiration on a more actively way, every set is checked if
- * there is a item to be expired it is expired, this is done keeping an
- * auxiliary queue structure, making very efficient the expiration.
+ * there is a item to be expired if so it is expired, this is done keeping an
+ * auxiliary min heap structure.
  *
  * Take in consideration that you should be careful using this class directly as
- * a symfony service, because it will be a singleton, and you can get
- * unpredictable behaviors.
+ * a symfony service, because it will be a singleton.
  *
  * Probably the best way to use this cache is to extend it and use the extended
  * class, that way you ensure that you get a instance just for yourself and you
@@ -35,7 +34,7 @@ use ESO\LCacheBundle\Exception\InvalidArgumentException;
  *
  * @author Eduardo Oliveira <entering@gmail.com>
  */
-class Cache implements CacheInterface
+class Cache implements CacheInterface, IntrospectableInterface
 {
     /**
      * Key.
@@ -43,19 +42,14 @@ class Cache implements CacheInterface
     const KEY = 'key';
 
     /**
-     * Stored at.
-     */
-    const KEY_STORED_AT = 'stored_at';
-
-    /**
      * Value.
      */
     const KEY_VALUE = 'value';
 
     /**
-     * Expiration.
+     * Expiration at.
      */
-    const KEY_EXPIRATION = 'expiration';
+    const KEY_EXPIRATION_AT = 'expiration_at';
 
     /**
      * Cache array, structure:
@@ -73,11 +67,11 @@ class Cache implements CacheInterface
     protected $cache = array();
 
     /**
-     * Cache queue, used to expire actively keys.
+     * Expiration min heap.
      *
-     * @var \SplQueue
+     * @var ExpirationMinHeap
      */
-    protected $cacheQueue;
+    protected $expirationHeap;
 
     /**
      * If true some get failed.
@@ -121,7 +115,7 @@ class Cache implements CacheInterface
      */
     public function __construct()
     {
-        $this->cacheQueue = new \SplQueue();
+        $this->expirationHeap = new ExpirationMinHeap();
     }
 
     /**
@@ -146,9 +140,8 @@ class Cache implements CacheInterface
 
         if (isset($this->cache[$key])) {
             // check expiration
-            if ($this->cache[$key][static::KEY_EXPIRATION] !== null &&
-                $this->cache[$key][static::KEY_STORED_AT] + $this->cache[$key][static::KEY_EXPIRATION]
-                < (new \DateTime())->getTimestamp()
+            if ($this->cache[$key][static::KEY_EXPIRATION_AT] !== null &&
+                $this->cache[$key][static::KEY_EXPIRATION_AT] < (new \DateTime())->getTimestamp()
             ) {
                 // simulate a miss
                 unset($this->cache[$key]);
@@ -179,38 +172,32 @@ class Cache implements CacheInterface
         // increment stats
         ++$this->cmdSet;
 
+        // try to expire
+        if ($this->expirationHeap->valid()) {
+            $top = $this->expirationHeap->top();
+            if (current($top) < (new \DateTime())->getTimestamp()) {
+                // expire
+                unset($this->cache[key($top)]);
+                $this->expirationHeap->extract();
+            }
+        }
+
         // validate data
         InvalidArgumentException::requireScalar($key, __METHOD__, 1);
         InvalidArgumentException::optionalPositiveInteger($expiration, __METHOD__, 3);
 
-        // check if the last item on queue can be expire
-        if (!$this->cacheQueue->isEmpty()) {
-            $top = $this->cacheQueue->top();
-            if ($top[static::KEY_STORED_AT] + $top[static::KEY_EXPIRATION] <
-                (new \DateTime())->getTimestamp()
-            ) {
-                unset($this->cache[$top[static::KEY]]);
-                $this->cacheQueue->pop();
-            }
-        }
-
         // set key on cache
-        $storedAt = (new \DateTime())->getTimestamp();
+        $expirationAt = ($expiration === null)
+            ? null
+            : ((new \DateTime())->getTimestamp() + $expiration);
         $this->cache[$key] = array(
-            static::KEY_STORED_AT => $storedAt,
             static::KEY_VALUE => $value,
-            static::KEY_EXPIRATION => $expiration
+            static::KEY_EXPIRATION_AT => $expirationAt
         );
 
-        // add to queue to make the actively expire easier
-        if ($expiration !== null) {
-            $this->cacheQueue->push(
-                array(
-                    static::KEY => $key,
-                    static::KEY_STORED_AT => $storedAt,
-                    static::KEY_EXPIRATION => $expiration
-                )
-            );
+        // add to expiration heap, if it have expiration at
+        if ($expirationAt !== null) {
+            $this->expirationHeap->insert(array($key => $expirationAt));
         }
     }
 

@@ -2,7 +2,7 @@ TODO
 =============================
 
 * Add more features:
-  * Add delete of cache entries; 
+  * <del>Add delete of cache entries</del>; 
   * Change expire date;
   * Limit cache number of keys;
   * Add locking system;

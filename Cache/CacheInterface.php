@@ -48,6 +48,13 @@ interface CacheInterface
     public function set($key, $value, $expiration = null);
 
     /**
+     * Deletes a value from cache given the key.
+     *
+     * @param string $key Key
+     */
+    public function del($key);
+
+    /**
      * Get not found.
      *
      * @return boolean True if a get failed because key not found, false otherwise.

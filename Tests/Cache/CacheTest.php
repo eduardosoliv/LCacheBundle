@@ -130,6 +130,27 @@ class CacheTest extends \PHPUnit_Framework_TestCase
 
     /*
      |--------------------------------------------------------------------------
+     | Test delete.
+     |--------------------------------------------------------------------------
+     */
+
+    /**
+     * Test delete.
+     */
+    public function testDel()
+    {
+        $key = 'test1';
+        $value = 'temp1';
+
+        $this->cache->set($key, $value, 10);
+        $this->assertEquals($value, $this->cache->get($key));
+        $this->cache->del($key);
+        $this->assertFalse($this->cache->get($key));
+        $this->assertTrue($this->cache->notFound());
+    }
+
+    /*
+     |--------------------------------------------------------------------------
      | Test others.
      |--------------------------------------------------------------------------
      */
@@ -141,6 +162,7 @@ class CacheTest extends \PHPUnit_Framework_TestCase
     {
         $gets = 10;
         $sets = 5;
+        $dels = 5;
 
         $statsEmpty = $this->cache->getStats();
         $this->assertInternalType('array', $statsEmpty);
@@ -164,8 +186,16 @@ class CacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($sets, $stats['curr_items']);
         $this->assertEquals($gets * 2, $stats['cmd_get']);
         $this->assertEquals($sets, $stats['cmd_set']);
+        $this->assertEquals(0, $stats['cmd_del']);
         $this->assertEquals($sets, $stats['get_hits']);
         $this->assertEquals($gets + $sets, $stats['get_misses']);
+
+        for ($i = 1; $i <= $dels; ++$i) {
+            $this->cache->del('key' . $i);
+        }
+
+        $stats = $this->cache->getStats();
+        $this->assertEquals($dels, $stats['cmd_del']);
     }
 
     /**

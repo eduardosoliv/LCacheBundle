@@ -109,6 +109,13 @@ class Cache implements CacheInterface, IntrospectableInterface
     protected $cmdSet = 0;
 
     /**
+     * Number of times delete command was called.
+     *
+     * @var int
+     */
+    protected $cmdDel = 0;
+
+    /**
      * Get hits.
      *
      * @var integer
@@ -234,6 +241,19 @@ class Cache implements CacheInterface, IntrospectableInterface
     }
 
     /**
+     * Deletes a value from cache given the key.
+     *
+     * @param string $key Key
+     */
+    public function del($key)
+    {
+        // increment stats
+        ++$this->cmdDel;
+
+        unset($this->cache[$key]);
+    }
+
+    /**
      * Get not found.
      *
      * @return boolean True if a get failed because key not found, false otherwise.
@@ -254,6 +274,7 @@ class Cache implements CacheInterface, IntrospectableInterface
             'curr_items' => count($this->cache),
             'cmd_get' => $this->cmdGet,
             'cmd_set' => $this->cmdSet,
+            'cmd_del' => $this->cmdDel,
             'get_hits' => $this->getHits,
             'get_misses' => $this->getMisses,
         );

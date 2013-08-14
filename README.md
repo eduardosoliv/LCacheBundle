@@ -1,4 +1,4 @@
-Consistent hashing Symfony 2 bundle
+Local cache symfony 2 bundle
 =============================
 
 [![Build Status](https://api.travis-ci.org/entering/LCacheBundle.png?branch=master)](https://travis-ci.org/entering/LCacheBundle)

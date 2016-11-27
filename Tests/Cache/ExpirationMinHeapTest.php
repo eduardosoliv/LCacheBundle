@@ -69,7 +69,8 @@ class ExpirationMinHeapTest extends \PHPUnit_Framework_TestCase
         $lastItemValue = 0;
         foreach ($itemsHeap as $item) {
             $this->assertGreaterThanOrEqual(
-                $lastItemValue, $value = current($item)
+                $lastItemValue,
+                $value = current($item)
             );
             $lastItemValue = $value;
         }

@@ -13,11 +13,15 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "squizlabs/php_codesniffer": "2.7.*"
     },
     "autoload": {
         "psr-0": { "ESO\\LCacheBundle": "" }
     },
     "minimum-stability": "dev",
-    "target-dir": "ESO/LCacheBundle"
+    "target-dir": "ESO/LCacheBundle",
+    "config": {
+        "bin-dir": "bin/"
+    }
 }

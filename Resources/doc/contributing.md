@@ -1,4 +1,4 @@
-Developing
+Contributing
 =============================
 
 Flow
@@ -22,7 +22,5 @@ PSR-*
 
 Testing
 ------------
-
-I'm using PHPunit 3.7.* to test the code.
 
 All new code should have tests.

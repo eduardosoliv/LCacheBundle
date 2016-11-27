@@ -5,8 +5,6 @@ Documentation
 
 * [How to use](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/howtouse.md)
 
-* [Developing](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/developing.md)
-
-* [TODO](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/todo.md)
+* [Contributing](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/developing.md)
 
 * [LICENSE](https://github.com/entering/LCacheBundle/blob/master/Resources/doc/LICENSE) 

@@ -22,11 +22,11 @@ class ExpirationMinHeap extends \SplHeap
      * Compare.
      *
      * @param array $array1
-     * @param type $array2
+     * @param array $array2
      *
      * @return array
      */
-    public function compare(array $array1, array $array2)
+    public function compare($array1, $array2)
     {
         $value1 = current($array1);
         $value2 = current($array2);

@@ -2,6 +2,7 @@ Local cache symfony 2 bundle
 =============================
 
 [![Build Status](https://api.travis-ci.org/entering/LCacheBundle.png?branch=master)](https://travis-ci.org/entering/LCacheBundle)
+[![Coverage Status](https://coveralls.io/repos/github/entering/LCacheBundle/badge.svg?branch=master)](https://coveralls.io/github/entering/LCacheBundle?branch=master)
 
 What does this bundle do?
 ------------

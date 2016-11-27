@@ -14,3 +14,7 @@ before_script:
   - php composer.phar install --dev
 
 script: phpunit --coverage-text
+
+after_success:
+  - if [ "$COVERALLS" = "yes" ]; then php composer.phar require --dev satooshi/php-coveralls dev-master && vendor/bin/coveralls -vvv; fi
+
